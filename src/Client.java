@@ -4,6 +4,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Client extends JPanel {
@@ -11,8 +12,13 @@ public class Client extends JPanel {
     private int[] polyY = null;
     private ArrayList<int[]> polyListX;
     private ArrayList<int[]> polyListY;
-    private int identifier;
     private Graphics graphics;
+    private int port;
+    private BufferedImage image;
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
 
     public void setPolyListX(ArrayList<int[]> polyListX) {
         this.polyListX = polyListX;
@@ -22,10 +28,14 @@ public class Client extends JPanel {
         this.polyListY = polyListY;
     }
 
-    public Client(int identifier) {
-        this.identifier = identifier;
+    public int getPort() {
+        return port;
+    }
+
+    public Client(int port) {
+        this.port = port;
       this.setBorder(BorderFactory.createMatteBorder(
-                1, 0, 1, 1, Color.black));
+                1, 1, 1, 1, Color.black));
     }
 
     @Override
@@ -50,21 +60,24 @@ public class Client extends JPanel {
     }
 
     public void paintPoints(Graphics g, int[] polyX, int[] polyY) {
-        if(polyX == null || polyY == null) return;
-        for(int i=0;i<polyX.length-1;i++) {
 
-            if(polyX[i+1] == 0 && polyY[i+1] == 0) continue;
-            System.out.println("Drawing point " + polyX[i] +":" +polyY[i]);
+        System.out.println(polyX.length + ":" + polyY.length);
+        for(int i=0;i<polyX.length-1;i++) {
+           //System.out.println(polyX[i] + polyY[i]);
+
+            if(polyX.length != polyY.length) continue;
+            if((polyX[i+1] == 0 ) && (polyY[i+1] == 0)) continue;
             g.drawLine(polyX[i], polyY[i], polyX[i+1], polyY[i+1]);
         }
     }
     @Override
     protected void paintComponent(Graphics g) {
-    System.out.println("Calling paint");
-    graphics = g;
+        graphics = g;
         super.paintComponent(g);
-        for(int i=0;i<polyListX.size();i++) {
-            paintPoints(g, polyListX.get(i), polyListY.get(i));
-        }
+//        if(polyListX == null || polyListY == null) return;
+//        for(int i=0;i<polyListX.size();i++) {
+//            paintPoints(g, polyListX.get(i), polyListY.get(i));
+//        }
+        g.drawImage(image,0,0,this);
     }
 }

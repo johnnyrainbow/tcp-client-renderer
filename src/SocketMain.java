@@ -44,10 +44,11 @@ public class SocketMain {
                 return;
             }
             if(mymessage.contains("POLYGON")) {
-                System.out.println(mymessage);
                 Parser.parsePolyString(mymessage);
+            } else if(mymessage.contains("PIXELS")) {
+                System.out.println("parsing pixel string");
+                Parser.parsePixelString(mymessage);
             }
-            System.out.println(mymessage);// publishes update to main UI thread
         }
     }
 

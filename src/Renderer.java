@@ -6,41 +6,47 @@ public class Renderer  {
     private static ArrayList<Client> clients = new ArrayList<Client>();
     private static int clientWidth = -1;
     private static int clientHeight = -1;
-    private int frameWidth = 1500;
-    private int frameHeight = 1500;
+    private static int frameWidth = 1500;
+    private static int frameHeight = 1500;
     private static JFrame frame;
-
+    private static JPanel mainPanel;
     public static JFrame getFrame() {
         return frame;
     }
-
+    public static JPanel getMainPanel() {
+        return mainPanel;
+    }
     public void initFrame() {
         frame = new JFrame("My First GUI");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(frameWidth,frameHeight);
 
-        addClientsToList(1);
-
-        JPanel mainPanel = new JPanel();
-       // mainPanel.setLayout(new GridLayout(1,clients.size()));
-        //mainPanel.setSize(frameWidth,frameHeight);
-        //addClientsToGUI(mainPanel);
-        frame.add(clients.get(0));
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new GridLayout(1,5));
+        mainPanel.setSize(frameWidth,frameHeight);
+        frame.add(mainPanel);
         frame.setVisible(true);
     }
-
-    private void addClientsToList(int clientNum) {
-        for(int i=0;i<clientNum;i++) {
-            System.out.println("adding client " + i);
-            clients.add(new Client(i));
+    public static Client getClientByPort(int port) {
+        for(Client c: clients) {
+            if(c.getPort() == port) {
+                return c;
+            }
         }
+        return null;
     }
-    private void addClientsToGUI(JPanel frame) {
+    public static void addClient(Client client) {
+
+        clients.add(client);
+        calculateFrames();
+        client.setSize(clientWidth,clientHeight);
+        mainPanel.add(client);
+
+    }
+
+    private static void calculateFrames() {
         clientWidth = frameWidth/clients.size();
         clientHeight = frameHeight/clients.size();
-        for(int i=0;i<clients.size();i++) {
-            frame.add(clients.get(i));
-        }
     }
 
     public static int getClientWidth() {
